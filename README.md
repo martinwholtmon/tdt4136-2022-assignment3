@@ -1,4 +1,4 @@
-# TDT4136 (2022) - Assignment 2
+# TDT4136 (2022) - Assignment 3
 Implement the Minimax algorithm for adversarial search.
 - pseudocode: Figure 5.3 (p. 305) from the book
 
@@ -18,7 +18,7 @@ Implementation to use alpha-beta pruning to speed up the search.
 Based on the [Pac-Man project](https://inst.eecs.berkeley.edu/~cs188/su21/project2/) developed at UC Berkeley by John DeNero, Dan Klein, Pieter Abbeel, and many others. 
 To pass the assignment, **answer question 2 and 3**!
 
-Start by reading though the project description, and test that the code by executing the pacman.py; `python pacman.py`
+Start by reading through the project description, and test that the code works by executing pacman.py: `python pacman.py`
 
 ## Implementation
 Test your code with the autograder.py. The autograder will require that your code passes all the tests, so you will always get either 0/5 or 5/5 as the output.
