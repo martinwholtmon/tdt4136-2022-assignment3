@@ -141,7 +141,58 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         "*** YOUR CODE HERE ***"
 
-        util.raiseNotDefined()
+        def max_value(state, depth):
+            """Maximize the values to a given search depth for a game-state
+
+            Args:
+                state (_type_): The game-state
+                depth (int): Depth of the search
+            """
+            # Reached search depth or terminated
+            if depth == 0 or state.isWin() or state.isLose():
+                return self.evaluationFunction(state), None
+
+            # Explore successors states (minimize ghosts)
+            agent = self.index
+            v = float("-inf")
+            for action in state.getLegalActions(agent):
+                v2, _ = min_value(
+                    state.generateSuccessor(agent, action), depth, agent + 1
+                )
+                if v2 > v:
+                    v, move = v2, action
+            return v, move
+
+        def min_value(state, depth, agent):
+            """Minimize the values to a given search depth for a game-state
+
+            Args:
+                state (): The game-state
+                depth (int): Depth of the search
+                agent (int): the current agent we are exploring (minimizing)
+            """
+            # Reached search depth or terminated
+            if depth == 0 or state.isWin() or state.isLose():
+                return self.evaluationFunction(state), None
+
+            # Explore Successors states (Maximize pacman)
+            v = float("inf")
+            for action in state.getLegalActions(agent):
+                if agent == state.getNumAgents() - 1:
+                    # All ghosts minimized, maximize pacman
+                    v2, _ = max_value(state.generateSuccessor(agent, action), depth - 1)
+                else:
+                    # Minimize next ghost
+                    v2, _ = min_value(
+                        state.generateSuccessor(agent, action), depth, agent + 1
+                    )
+                if v2 < v:
+                    v, move = v2, action
+            return v, move
+
+        # initiate the minmax search
+        _, move = max_value(gameState, self.depth)
+        return move
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
