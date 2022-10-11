@@ -22,5 +22,5 @@ Start by reading through the project description, and test that the code works b
 
 ## Implementation
 Test your code with the autograder.py. The autograder will require that your code passes all the tests, so you will always get either 0/5 or 5/5 as the output.
-- `python autograder.py -q q2`
-- `python autograder.py -q q3`
+- `python autograder.py -q q2 --no-graphics`
+- `python autograder.py -q q3 --no-graphics`
