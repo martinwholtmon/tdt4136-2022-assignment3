@@ -208,7 +208,81 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         Returns the minimax action using self.depth and self.evaluationFunction
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        def max_value(state, depth, alpha, beta):
+            """Maximize the values to a given search depth for a game-state
+
+            Args:
+                state (_type_): The game-state
+                depth (int): Depth of the search
+            """
+            # Reached search depth or terminated
+            if depth == 0 or state.isWin() or state.isLose():
+                return self.evaluationFunction(state), None
+
+            # Explore successors states (minimize ghosts)
+            agent = self.index
+            v = float("-inf")
+            for action in state.getLegalActions(agent):
+                v2, _ = min_value(
+                    state.generateSuccessor(agent, action),
+                    depth,
+                    agent + 1,
+                    alpha,
+                    beta,
+                )
+                if v2 > v:
+                    v, move = v2, action
+                    alpha = max(alpha, v)
+                if v > beta:
+                    return v, move
+            return v, move
+
+        def min_value(state, depth, agent, alpha, beta):
+            """Minimize the values to a given search depth for a game-state
+
+            Args:
+                state (): The game-state
+                depth (int): Depth of the search
+                agent (int): the current agent we are exploring (minimizing)
+            """
+            # Reached search depth or terminated
+            if depth == 0 or state.isWin() or state.isLose():
+                return self.evaluationFunction(state), None
+
+            # Explore Successors states (Maximize pacman)
+            v = float("inf")
+            for action in state.getLegalActions(agent):
+                # Because there are not only one "opponent",
+                # we have to minimize all the ghosts, i.e. multiple min layers
+
+                if agent == state.getNumAgents() - 1:
+                    # All ghosts minimized, maximize pacman -> next depth/ply
+                    v2, _ = max_value(
+                        state.generateSuccessor(agent, action),
+                        depth - 1,
+                        alpha,
+                        beta,
+                    )
+                else:
+                    # Minimize next ghost
+                    v2, _ = min_value(
+                        state.generateSuccessor(agent, action),
+                        depth,
+                        agent + 1,
+                        alpha,
+                        beta,
+                    )
+                if v2 < v:
+                    v, move = v2, action
+                    beta = min(beta, v)
+                if v < alpha:
+                    return v, move
+            return v, move
+
+        # initiate the minmax search
+        _, move = max_value(gameState, self.depth, float("-inf"), float("inf"))
+        return move
 
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
