@@ -178,8 +178,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
             # Explore Successors states (Maximize pacman)
             v = float("inf")
             for action in state.getLegalActions(agent):
+                # Because there are not only one "opponent",
+                # we have to minimize all the ghosts, i.e. multiple min layers
+
                 if agent == state.getNumAgents() - 1:
-                    # All ghosts minimized, maximize pacman
+                    # All ghosts minimized, maximize pacman -> next depth/ply
                     v2, _ = max_value(state.generateSuccessor(agent, action), depth - 1)
                 else:
                     # Minimize next ghost
