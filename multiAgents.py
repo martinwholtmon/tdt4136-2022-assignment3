@@ -156,6 +156,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
             agent = self.index
             v = float("-inf")
             for action in state.getLegalActions(agent):
+                # minimize ghost states for each legal action
                 v2, _ = min_value(
                     state.generateSuccessor(agent, action), depth, agent + 1
                 )
@@ -179,13 +180,14 @@ class MinimaxAgent(MultiAgentSearchAgent):
             v = float("inf")
             for action in state.getLegalActions(agent):
                 # Because there are not only one "opponent",
-                # we have to minimize all the ghosts, i.e. multiple min layers
+                # we have to minimize all the "opponents" (ghosts) legal actions,
+                # i.e. multiple min layers
 
                 if agent == state.getNumAgents() - 1:
                     # All ghosts minimized, maximize pacman -> next depth/ply
                     v2, _ = max_value(state.generateSuccessor(agent, action), depth - 1)
                 else:
-                    # Minimize next ghost
+                    # Continue minimize ghosts
                     v2, _ = min_value(
                         state.generateSuccessor(agent, action), depth, agent + 1
                     )
@@ -224,6 +226,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             agent = self.index
             v = float("-inf")
             for action in state.getLegalActions(agent):
+                # minimize ghost states for each legal action
                 v2, _ = min_value(
                     state.generateSuccessor(agent, action),
                     depth,
@@ -235,6 +238,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                     v, move = v2, action
                     alpha = max(alpha, v)
                 if v > beta:
+                    # Stop exploring possible actions
+                    # -> prune
                     return v, move
             return v, move
 
@@ -254,7 +259,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             v = float("inf")
             for action in state.getLegalActions(agent):
                 # Because there are not only one "opponent",
-                # we have to minimize all the ghosts, i.e. multiple min layers
+                # we have to minimize all the "opponents" (ghosts) legal actions,
+                # i.e. multiple min layers
 
                 if agent == state.getNumAgents() - 1:
                     # All ghosts minimized, maximize pacman -> next depth/ply
@@ -265,7 +271,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                         beta,
                     )
                 else:
-                    # Minimize next ghost
+                    # Continue minimize ghosts
                     v2, _ = min_value(
                         state.generateSuccessor(agent, action),
                         depth,
@@ -277,6 +283,8 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
                     v, move = v2, action
                     beta = min(beta, v)
                 if v < alpha:
+                    # Stop exploring possible actions
+                    # -> prune
                     return v, move
             return v, move
 
