@@ -20,6 +20,9 @@ To pass the assignment, **answer question 2 and 3**!
 
 Start by reading through the project description, and test that the code works by executing pacman.py: `python pacman.py`
 
+### **Important!**
+The only modifications you should do is modify the file `multiAgents.py` for the classes *MinimaxAgent* (q2) and *AlphaBetaAgent* (q3). The pydoc will give you some helper functions to get information about the game state, use them while implementing the algorithm. Such classes extend the class *MultiAgentSearchAgent*, so you will have access to e.g. `self.depth`, `self.evaluationFunction`, etc... Check out this class to see what you can use while implementing the algorithm. 
+
 ## Implementation
 Test your code with the autograder.py. The autograder will require that your code passes all the tests, so you will always get either 0/5 or 5/5 as the output.
 - `python autograder.py -q q2 --no-graphics`
